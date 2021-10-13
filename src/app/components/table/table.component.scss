@@ -1,0 +1,26 @@
+table {
+  width: 100%;
+}
+
+.example-button-row {
+  display: table-cell;
+  width: 490px;
+}
+
+.modal-custom{
+  top: 20%;
+  position: absolute;
+  width: 100%;
+}
+
+.example-flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.example-button-container {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+}

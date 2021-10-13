@@ -1,0 +1,131 @@
+<div>
+  <mat-toolbar color="primary">
+    <span>Ito-Usuarios</span>
+  </mat-toolbar>
+  <mat-card style="border-radius: 0px;height:800px">
+    <mat-grid-list cols="4" rowHeight="100px">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Usuario</mat-label>
+          <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Nombres</mat-label>
+          <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Apellidos</mat-label>
+          <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div>
+      <button (click)="openModal('create')" mat-mini-fab color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mat-card-content>
+      <table mat-table [dataSource]="Users" class="mat-elevation-z8">
+        <!-- userName Column -->
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef> usuario </th>
+          <td mat-cell *matCellDef="let itemUser"> {{itemUser.userName}} </td>
+        </ng-container>
+      
+        <!-- email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Correo Electronico </th>
+          <td mat-cell *matCellDef="let itemUser"> {{itemUser.email}} </td>
+        </ng-container>
+      
+        <!-- firstName Column -->
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef> Nombres </th>
+          <td mat-cell *matCellDef="let itemUser"> {{itemUser.firstName}} </td>
+        </ng-container>
+      
+        <!-- lastName Column -->
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+          <td mat-cell *matCellDef="let itemUser"> {{itemUser.lastName}} </td>
+        </ng-container>
+  
+        <!-- status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Activo? </th>
+          <td mat-cell *matCellDef="let itemUser"> {{itemUser.status}} </td>
+        </ng-container>
+  
+        <!-- actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let itemUser"> 
+            <button (click)="openModal('show', itemUser);" mat-mini-fab color="primary">
+              <mat-icon>show</mat-icon>
+            </button>
+            <button (click)="openModal('update', itemUser);" mat-mini-fab color="accent">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [length]="Users.data.length" [pageSizeOptions]="[10]" aria-label="Selaccione una pagina"></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="modal-custom" *ngIf="showModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Usuario</h5>
+        <button (click)="openModal('')" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="FormUser">
+          <div class="form-group">
+            <label>Nombres</label>
+            <input type="text" formControlName="firstName" class="form-control" aria-describedby="helpId">
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" formControlName="lastName" class="form-control" aria-describedby="helpId">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="text" formControlName="email" class="form-control" aria-describedby="helpId">
+          </div>
+          <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" formControlName="userName" class="form-control" aria-describedby="helpId">
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select class="form-control" formControlName="status">
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="openModal('')" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" (click)="onSubmit()" *ngIf="type !== 'show'" [disabled]="FormUser.invalid" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
